@@ -1,16 +1,19 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "SphereParent.h"
+#include "Kismet/GameplayStatics.h"
 
-
-// Sets default values
 ASphereParent::ASphereParent()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 }
+void ASphereParent::BeginPlay()
+{
+	Super::BeginPlay();
+	SetRandomLocationAndRotation();
+}
+
 
 void ASphereParent::Tick(float DeltaTime)
 {
@@ -30,5 +33,22 @@ void ASphereParent::Moving()
 		float NewZLocation = GetActorLocation().Z + MovingSpeed * 0.2;
 		SetActorLocation(FVector(GetActorLocation().X,GetActorLocation().Y,NewZLocation));
 	}
+}
 
+void ASphereParent::SphereSpawn()
+{
+	SpawnRange = 2000;
+	PlayerCharacterLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
+	for	(int i =0; i<SphereCount; i++)
+	{
+		SetRandomLocationAndRotation();
+		//GetWorld()->SpawnActor();
+	}
+}
+
+void ASphereParent::SetRandomLocationAndRotation()
+{
+	RandomLocation.X=rand() % SpawnRange;
+	RandomLocation.Y=rand() % SpawnRange;
+	RandomRotation = GetActorRotation();
 }
