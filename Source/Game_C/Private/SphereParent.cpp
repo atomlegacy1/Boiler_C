@@ -1,19 +1,16 @@
 
 
 #include "SphereParent.h"
-#include "Kismet/GameplayStatics.h"
 
 ASphereParent::ASphereParent()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 void ASphereParent::BeginPlay()
 {
 	Super::BeginPlay();
-	SetRandomLocationAndRotation();
+	SphereSpawn();
 }
-
 
 void ASphereParent::Tick(float DeltaTime)
 {
@@ -35,20 +32,16 @@ void ASphereParent::Moving()
 	}
 }
 
-void ASphereParent::SphereSpawn()
-{
-	SpawnRange = 2000;
-	PlayerCharacterLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
-	for	(int i =0; i<SphereCount; i++)
-	{
-		SetRandomLocationAndRotation();
-		//GetWorld()->SpawnActor();
-	}
-}
-
 void ASphereParent::SetRandomLocationAndRotation()
 {
-	RandomLocation.X=rand() % SpawnRange;
-	RandomLocation.Y=rand() % SpawnRange;
+	//RandomLocation.X=FMath::RandRange(MinSpawnRange, MaxSpawnRange);
+	//RandomLocation.Y=FMath::RandRange(MinSpawnRange, MaxSpawnRange);
+	RandomLocation = GetActorLocation();
 	RandomRotation = GetActorRotation();
+}
+
+void ASphereParent::SphereSpawn()
+{
+	SetRandomLocationAndRotation();
+	GetWorld()->SpawnActor<ASphereParent>(ActorToSpawn,RandomLocation,RandomRotation);
 }

@@ -19,6 +19,9 @@ public:
 	void Moving();
 	void SphereSpawn();
 	void SetRandomLocationAndRotation();
+
+	UPROPERTY(EditAnywhere,Category = "Spawn setup")
+	TSubclassOf<ASphereParent> ActorToSpawn;
 	
 private:
 	UPROPERTY(EditAnywhere,Category = "Moving Setup")
@@ -28,13 +31,13 @@ private:
 	int MovingSpeed = 0;
 
 	UPROPERTY(EditAnywhere,Category = "Spawn setup")
-	TSubclassOf<ASphereParent> ActorToSpawn;
-	
-	FVector PlayerCharacterLocation;
+	int MaxSpawnRange = 0;
 
+	UPROPERTY(VisibleAnywhere,Category = "Spawn setup")
+	int MinSpawnRange = 0;
+	
 	FVector RandomLocation;
 	FRotator RandomRotation;
 
-	int SpawnRange;
-	int SphereCount;
+	int SphereCount = 15;
 };
