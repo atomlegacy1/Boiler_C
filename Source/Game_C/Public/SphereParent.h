@@ -14,14 +14,10 @@ class GAME_C_API ASphereParent : public AActor
 public:	
 	ASphereParent();
 	virtual void Tick(float DeltaTime) override;
-	virtual void BeginPlay() override;
-
+	
 	void Moving();
 	void SphereSpawn();
 	void SetRandomLocationAndRotation();
-
-	UPROPERTY(EditAnywhere,Category = "Spawn setup")
-	TSubclassOf<ASphereParent> ActorToSpawn;
 	
 private:
 	UPROPERTY(EditAnywhere,Category = "Moving Setup")
@@ -35,9 +31,15 @@ private:
 
 	UPROPERTY(VisibleAnywhere,Category = "Spawn setup")
 	int MinSpawnRange = 0;
+
+	UPROPERTY(EditAnywhere,Category = "Spawn setup",meta =(AllowPrivateAccess = "true"))
+	TSubclassOf<ASphereParent> ActorToSpawn;
 	
 	FVector RandomLocation;
 	FRotator RandomRotation;
 
 	int SphereCount = 15;
+
+protected:
+	virtual void BeginPlay() override;
 };

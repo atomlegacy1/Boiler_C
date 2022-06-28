@@ -15,7 +15,7 @@ void ASphereParent::BeginPlay()
 void ASphereParent::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	Moving();
+	//Moving();
 }
 
 void ASphereParent::Moving()
@@ -34,14 +34,17 @@ void ASphereParent::Moving()
 
 void ASphereParent::SetRandomLocationAndRotation()
 {
-	//RandomLocation.X=FMath::RandRange(MinSpawnRange, MaxSpawnRange);
-	//RandomLocation.Y=FMath::RandRange(MinSpawnRange, MaxSpawnRange);
-	RandomLocation = GetActorLocation();
-	RandomRotation = GetActorRotation();
+	RandomLocation.X=FMath::RandRange(MinSpawnRange, MaxSpawnRange);
+	RandomLocation.Y=FMath::RandRange(MinSpawnRange, MaxSpawnRange);
+	RandomLocation.Z=GetActorLocation().Z;
+	RandomRotation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorRotation();
 }
 
 void ASphereParent::SphereSpawn()
 {
-	SetRandomLocationAndRotation();
-	GetWorld()->SpawnActor<ASphereParent>(ActorToSpawn,RandomLocation,RandomRotation);
+	for (int i = 0; i < SphereCount; i++)
+	{
+		SetRandomLocationAndRotation();
+		GetWorld()->SpawnActor<ASphereParent>(ActorToSpawn,RandomLocation,RandomRotation);
+	}
 }
