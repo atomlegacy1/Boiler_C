@@ -2,6 +2,7 @@
 
 #include "SphereParent.h"
 
+
 ASphereParent::ASphereParent()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -15,7 +16,7 @@ void ASphereParent::BeginPlay()
 void ASphereParent::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//Moving();
+	Moving();
 }
 
 void ASphereParent::Moving()
@@ -36,7 +37,7 @@ void ASphereParent::SetRandomLocationAndRotation()
 {
 	RandomLocation.X=FMath::RandRange(MinSpawnRange, MaxSpawnRange);
 	RandomLocation.Y=FMath::RandRange(MinSpawnRange, MaxSpawnRange);
-	RandomLocation.Z=GetActorLocation().Z;
+	RandomLocation.Z=GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation().Z+50;
 	RandomRotation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorRotation();
 }
 
@@ -44,7 +45,18 @@ void ASphereParent::SphereSpawn()
 {
 	for (int i = 0; i < SphereCount; i++)
 	{
-		SetRandomLocationAndRotation();
-		GetWorld()->SpawnActor<ASphereParent>(ActorToSpawn,RandomLocation,RandomRotation);
+		SphereNumSpawn = FMath::RandRange(0,1);
+		if (SphereNumSpawn == 1)
+		{
+			SetRandomLocationAndRotation();
+			IsMovingUp = false;
+			GetWorld()->SpawnActor<ASphereParent>(ActorToSpawn,RandomLocation,RandomRotation);
+		}
+		else
+		{
+			SetRandomLocationAndRotation();
+			IsMovingUp = true;
+			GetWorld()->SpawnActor<ASphereParent>(ActorToSpawn,RandomLocation,RandomRotation);
+		}
 	}
 }

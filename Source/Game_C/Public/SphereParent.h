@@ -25,19 +25,23 @@ private:
 
 	UPROPERTY(EditAnywhere,Category = "Moving Setup")
 	int MovingSpeed = 0;
-
 	UPROPERTY(EditAnywhere,Category = "Spawn setup")
 	int MaxSpawnRange = 0;
-
-	UPROPERTY(VisibleAnywhere,Category = "Spawn setup")
+	UPROPERTY(EditAnywhere,Category = "Spawn setup")
 	int MinSpawnRange = 0;
 
 	UPROPERTY(EditAnywhere,Category = "Spawn setup",meta =(AllowPrivateAccess = "true"))
 	TSubclassOf<ASphereParent> ActorToSpawn;
+
+	UPROPERTY(EditAnywhere,Category = "Spawn setup")
+	class UMaterial* UpDownSphereMaterial;
+	UPROPERTY(EditAnywhere,Category = "Spawn setup")
+	class UMaterial* LeftRightSphereMaterial;
 	
 	FVector RandomLocation;
 	FRotator RandomRotation;
 
+	int SphereNumSpawn = 0;
 	int SphereCount = 15;
 
 protected:
