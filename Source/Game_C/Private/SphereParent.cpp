@@ -18,7 +18,7 @@ void ASphereParent::Tick(float DeltaTime)
 	MovingDirectionChecker();
 }
 
-void ASphereParent::Moving(bool SphereBackwardMoving)
+void ASphereParent::Moving()
 {
 	float NewLocation;
 	if (!IsMovingUp)
@@ -41,7 +41,7 @@ void ASphereParent::Moving(bool SphereBackwardMoving)
 		}
 		else
 		{
-			NewLocation = GetActorLocation().X - MovingSpeed * 0.2;
+			NewLocation = GetActorLocation().Z - MovingSpeed * 0.2;
 		}
 		SetActorLocation(FVector(GetActorLocation().X,GetActorLocation().Y,NewLocation));
 	}
@@ -51,7 +51,7 @@ void ASphereParent::SetRandomLocationAndRotation()
 {
 	RandomLocation.X=FMath::RandRange(MinSpawnRange, MaxSpawnRange);
 	RandomLocation.Y=FMath::RandRange(MinSpawnRange, MaxSpawnRange);
-	RandomLocation.Z=GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation().Z+50;
+	RandomLocation.Z=GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation().Z+100;
 	RandomRotation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorRotation();
 }
 void ASphereParent::SphereSpawn()
@@ -73,30 +73,23 @@ void ASphereParent::SphereSpawn()
 		}
 	}
 }
-// void ASphereParent::MovingBackward()
-// {
-// 	if (!IsMovingUp)
-// 	{
-// 		float NewXLocation = GetActorLocation().X - MovingSpeed * 0.2;
-// 		SetActorLocation(FVector(NewXLocation,GetActorLocation().Y,GetActorLocation().Z));
-// 	}
-// 	else
-// 	{
-// 		float NewZLocation = GetActorLocation().Z - MovingSpeed * 0.2;
-// 		SetActorLocation(FVector(GetActorLocation().X,GetActorLocation().Y,NewZLocation));
-// 	}
-// }
 
 void ASphereParent::MovingDirectionChecker()
 {
-	if ()
+	if (SphereMovingCounter==SphereMovingLimit)
 	{
-		
+		SphereMovingCounter=0;
+		if (SphereBackwardMoving)
+		{
+			SphereBackwardMoving = false;
+		}
+		else
+		{
+			SphereBackwardMoving = true;
+		}
 	}
-	else
-	{
-		
-	}
+	SphereMovingCounter++;
+	Moving();
 }
 
 

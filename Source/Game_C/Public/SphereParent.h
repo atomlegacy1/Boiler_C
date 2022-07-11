@@ -19,8 +19,7 @@ public:
 	void SetRandomLocationAndRotation();
 	void MovingDirectionChecker();
 	
-	void Moving(bool SphereBackwardMoving);
-	//void MovingBackward();
+	void Moving();
 	
 private:
 	
@@ -46,7 +45,7 @@ private:
 	int SphereCount = 15;
 
 	int SphereMovingCounter = 0;
-	int SphereMovingLimit = 100;
+	int SphereMovingLimit = 500;
 
 	bool SphereBackwardMoving = false;
 protected:
