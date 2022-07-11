@@ -12,19 +12,25 @@ class GAME_C_API ASphereParent : public AActor
 	GENERATED_BODY()
 	
 public:	
+
 	ASphereParent();
 	virtual void Tick(float DeltaTime) override;
-	
-	void Moving();
 	void SphereSpawn();
 	void SetRandomLocationAndRotation();
+	void MovingDirectionChecker();
+	
+	void Moving(bool SphereBackwardMoving);
+	//void MovingBackward();
 	
 private:
+	
 	UPROPERTY(EditAnywhere,Category = "Moving Setup")
 	bool IsMovingUp = false;
-
+	UPROPERTY(EditAnywhere,Category = "Moving setup")
+	float MovingDistance = 50;
 	UPROPERTY(EditAnywhere,Category = "Moving Setup")
 	int MovingSpeed = 0;
+	int MovingSpeedConst = 0.2;
 	UPROPERTY(EditAnywhere,Category = "Spawn setup")
 	int MaxSpawnRange = 0;
 	UPROPERTY(EditAnywhere,Category = "Spawn setup")
@@ -32,11 +38,6 @@ private:
 
 	UPROPERTY(EditAnywhere,Category = "Spawn setup",meta =(AllowPrivateAccess = "true"))
 	TSubclassOf<ASphereParent> ActorToSpawn;
-
-	UPROPERTY(EditAnywhere,Category = "Spawn setup")
-	class UMaterial* UpDownSphereMaterial;
-	UPROPERTY(EditAnywhere,Category = "Spawn setup")
-	class UMaterial* LeftRightSphereMaterial;
 	
 	FVector RandomLocation;
 	FRotator RandomRotation;
@@ -44,6 +45,13 @@ private:
 	int SphereNumSpawn = 0;
 	int SphereCount = 15;
 
+	int SphereMovingCounter = 0;
+	int SphereMovingLimit = 100;
+
+	bool SphereBackwardMoving = false;
 protected:
 	virtual void BeginPlay() override;
 };
+
+//TODO Material change by sphere number and direction//
+//TODO Sphere moving direction change//

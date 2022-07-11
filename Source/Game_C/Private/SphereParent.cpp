@@ -2,7 +2,6 @@
 
 #include "SphereParent.h"
 
-
 ASphereParent::ASphereParent()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -16,20 +15,35 @@ void ASphereParent::BeginPlay()
 void ASphereParent::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	Moving();
+	MovingDirectionChecker();
 }
 
-void ASphereParent::Moving()
+void ASphereParent::Moving(bool SphereBackwardMoving)
 {
+	float NewLocation;
 	if (!IsMovingUp)
 	{
-		float NewXLocation = GetActorLocation().X + MovingSpeed * 0.2;
-		SetActorLocation(FVector(NewXLocation,GetActorLocation().Y,GetActorLocation().Z));
+		if (SphereBackwardMoving)
+		{
+			NewLocation = GetActorLocation().X + MovingSpeed * 0.2;
+		}
+		else
+		{
+			NewLocation = GetActorLocation().X - MovingSpeed * 0.2;
+		}
+		SetActorLocation(FVector(NewLocation,GetActorLocation().Y,GetActorLocation().Z));
 	}
 	else
 	{
-		float NewZLocation = GetActorLocation().Z + MovingSpeed * 0.2;
-		SetActorLocation(FVector(GetActorLocation().X,GetActorLocation().Y,NewZLocation));
+		if (SphereBackwardMoving)
+		{
+			NewLocation = GetActorLocation().Z + MovingSpeed * 0.2;
+		}
+		else
+		{
+			NewLocation = GetActorLocation().X - MovingSpeed * 0.2;
+		}
+		SetActorLocation(FVector(GetActorLocation().X,GetActorLocation().Y,NewLocation));
 	}
 }
 
@@ -40,7 +54,6 @@ void ASphereParent::SetRandomLocationAndRotation()
 	RandomLocation.Z=GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation().Z+50;
 	RandomRotation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorRotation();
 }
-
 void ASphereParent::SphereSpawn()
 {
 	for (int i = 0; i < SphereCount; i++)
@@ -60,3 +73,30 @@ void ASphereParent::SphereSpawn()
 		}
 	}
 }
+// void ASphereParent::MovingBackward()
+// {
+// 	if (!IsMovingUp)
+// 	{
+// 		float NewXLocation = GetActorLocation().X - MovingSpeed * 0.2;
+// 		SetActorLocation(FVector(NewXLocation,GetActorLocation().Y,GetActorLocation().Z));
+// 	}
+// 	else
+// 	{
+// 		float NewZLocation = GetActorLocation().Z - MovingSpeed * 0.2;
+// 		SetActorLocation(FVector(GetActorLocation().X,GetActorLocation().Y,NewZLocation));
+// 	}
+// }
+
+void ASphereParent::MovingDirectionChecker()
+{
+	if ()
+	{
+		
+	}
+	else
+	{
+		
+	}
+}
+
+
