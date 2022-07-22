@@ -15,12 +15,16 @@ public:
 
 	ASphereParent();
 	virtual void Tick(float DeltaTime) override;
-	void SphereSpawn();
 	void SetRandomLocationAndRotation();
 	void MovingDirectionChecker();
-	
 	void Moving();
+	void SpawnDelay();
+
+	UFUNCTION(BlueprintCallable,Category = "Wave" )
+	void WaveChecker(int CurrentWave);
 	
+	UFUNCTION(BlueprintCallable,Category = "Material set")
+	bool SphereSpawn();
 private:
 	
 	UPROPERTY(EditAnywhere,Category = "Moving Setup")
@@ -34,23 +38,28 @@ private:
 	int MaxSpawnRange = 0;
 	UPROPERTY(EditAnywhere,Category = "Spawn setup")
 	int MinSpawnRange = 0;
+	UPROPERTY(EditAnywhere,Category = "Rotation setup")
+	int MinRandomRotation = 0;
+	UPROPERTY(EditAnywhere,Category = "Rotation setup")
+	int MaxRandomRotation = 360;
 
 	UPROPERTY(EditAnywhere,Category = "Spawn setup",meta =(AllowPrivateAccess = "true"))
 	TSubclassOf<ASphereParent> ActorToSpawn;
 	
 	FVector RandomLocation;
 	FRotator RandomRotation;
+	FVector ActorLocation;
 
 	int SphereNumSpawn = 0;
 	int SphereCount = 15;
-
 	int SphereMovingCounter = 0;
 	int SphereMovingLimit = 500;
-
 	bool SphereBackwardMoving = false;
+	int SpherePoints = 1;
+
+	FTimerHandle TimeBeforeSpawn;
 protected:
 	virtual void BeginPlay() override;
 };
 
-//TODO Material change by sphere number and direction//
-//TODO Sphere moving direction change//
+

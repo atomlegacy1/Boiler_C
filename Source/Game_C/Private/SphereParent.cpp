@@ -9,7 +9,6 @@ ASphereParent::ASphereParent()
 void ASphereParent::BeginPlay()
 {
 	Super::BeginPlay();
-	SphereSpawn();
 }
 
 void ASphereParent::Tick(float DeltaTime)
@@ -20,30 +19,30 @@ void ASphereParent::Tick(float DeltaTime)
 
 void ASphereParent::Moving()
 {
-	float NewLocation;
+	FVector NewLocation;
 	if (!IsMovingUp)
 	{
 		if (SphereBackwardMoving)
 		{
-			NewLocation = GetActorLocation().X + MovingSpeed * 0.2;
+			NewLocation = GetActorLocation() + GetActorForwardVector() * MovingSpeed * 0.2;
 		}
 		else
 		{
-			NewLocation = GetActorLocation().X - MovingSpeed * 0.2;
+			NewLocation = GetActorLocation() - GetActorForwardVector() * MovingSpeed * 0.2;
 		}
-		SetActorLocation(FVector(NewLocation,GetActorLocation().Y,GetActorLocation().Z));
+		SetActorLocation(NewLocation);
 	}
 	else
 	{
 		if (SphereBackwardMoving)
 		{
-			NewLocation = GetActorLocation().Z + MovingSpeed * 0.2;
+			NewLocation = GetActorLocation()+ GetActorUpVector() * MovingSpeed * 0.2;
 		}
 		else
 		{
-			NewLocation = GetActorLocation().Z - MovingSpeed * 0.2;
+			NewLocation = GetActorLocation()-GetActorUpVector() * MovingSpeed * 0.2;
 		}
-		SetActorLocation(FVector(GetActorLocation().X,GetActorLocation().Y,NewLocation));
+		SetActorLocation(NewLocation);
 	}
 }
 
@@ -51,10 +50,15 @@ void ASphereParent::SetRandomLocationAndRotation()
 {
 	RandomLocation.X=FMath::RandRange(MinSpawnRange, MaxSpawnRange);
 	RandomLocation.Y=FMath::RandRange(MinSpawnRange, MaxSpawnRange);
-	RandomLocation.Z=GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation().Z+100;
-	RandomRotation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorRotation();
+	RandomLocation.Z=FMath::RandRange(600, 850); //<--
+	RandomRotation.Roll= FMath::RandRange(MinRandomRotation, MaxRandomRotation);
+	RandomRotation.Yaw= FMath::RandRange(MinRandomRotation, MaxRandomRotation);
+	RandomRotation.Pitch= FMath::RandRange(MinRandomRotation, MaxRandomRotation);
+
+	ActorLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
+	RandomLocation = RandomLocation + 80 + ActorLocation ;
 }
-void ASphereParent::SphereSpawn()
+bool ASphereParent::SphereSpawn()
 {
 	for (int i = 0; i < SphereCount; i++)
 	{
@@ -72,6 +76,7 @@ void ASphereParent::SphereSpawn()
 			GetWorld()->SpawnActor<ASphereParent>(ActorToSpawn,RandomLocation,RandomRotation);
 		}
 	}
+	return IsMovingUp;
 }
 
 void ASphereParent::MovingDirectionChecker()
@@ -92,4 +97,12 @@ void ASphereParent::MovingDirectionChecker()
 	Moving();
 }
 
+void ASphereParent::WaveChecker (int CurrentWave)
+{
+	if (CurrentWave == 2)
+	{
+		SetRandomLocationAndRotation();
+		SphereSpawn();
+	}
+}
 
