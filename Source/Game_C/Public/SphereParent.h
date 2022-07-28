@@ -18,13 +18,12 @@ public:
 	void SetRandomLocationAndRotation();
 	void MovingDirectionChecker();
 	void Moving();
-	void SpawnDelay();
 
-	UFUNCTION(BlueprintCallable,Category = "Wave" )
-	void WaveChecker(int CurrentWave);
+	void RandomSphereMovingLimitSet();
 	
 	UFUNCTION(BlueprintCallable,Category = "Material set")
 	bool SphereSpawn();
+
 private:
 	
 	UPROPERTY(EditAnywhere,Category = "Moving Setup")
@@ -53,11 +52,10 @@ private:
 	int SphereNumSpawn = 0;
 	int SphereCount = 15;
 	int SphereMovingCounter = 0;
-	int SphereMovingLimit = 500;
+	int SphereMovingLimit = 0;
 	bool SphereBackwardMoving = false;
 	int SpherePoints = 1;
 
-	FTimerHandle TimeBeforeSpawn;
 protected:
 	virtual void BeginPlay() override;
 };

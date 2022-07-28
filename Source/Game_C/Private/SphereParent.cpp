@@ -9,6 +9,7 @@ ASphereParent::ASphereParent()
 void ASphereParent::BeginPlay()
 {
 	Super::BeginPlay();
+	RandomSphereMovingLimitSet();
 }
 
 void ASphereParent::Tick(float DeltaTime)
@@ -97,12 +98,7 @@ void ASphereParent::MovingDirectionChecker()
 	Moving();
 }
 
-void ASphereParent::WaveChecker (int CurrentWave)
+void ASphereParent::RandomSphereMovingLimitSet()
 {
-	if (CurrentWave == 2)
-	{
-		SetRandomLocationAndRotation();
-		SphereSpawn();
-	}
+	SphereMovingLimit = FMath::RandRange(200, 550);
 }
-
